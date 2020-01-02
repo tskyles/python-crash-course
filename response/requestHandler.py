@@ -1,7 +1,7 @@
 class MockFile():
   def read(self):
-    return False
-
+      return False
+        
 class RequestHandler():
   def __init__(self):
     self.contentType = ""
@@ -16,11 +16,11 @@ class RequestHandler():
   def setStatus(self, status):
     self.status = status
 
-  def getstatus(self):
+  def getStatus(self):
     return self.status
 
   def getContentType(self):
-    return self.contentType
+    return self.contentType 
 
   def getType(self):
     return 'static'

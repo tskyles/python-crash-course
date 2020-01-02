@@ -1,8 +1,9 @@
+
 from response.requestHandler import RequestHandler
 
 class TemplateHandler(RequestHandler):
   def __init__(self):
-    super().__init__():
+    super().__init__()
     self.contentType = 'text/html'
 
   def find(self, routeData):
