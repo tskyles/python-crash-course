@@ -1,4 +1,5 @@
 import os
+
 from response.requestHandler import RequestHandler
 
 class StaticHandler(RequestHandler):
@@ -10,18 +11,18 @@ class StaticHandler(RequestHandler):
       ".png" : "image/png",
       "notfound" : "text/plain"
     }
-  
+
   def find(self, file_path):
     split_path = os.path.splitext(file_path)
-    extention = split_path[1]
+    extension = split_path[1]
 
-    try:
-      if extention in (".jpg", ".jpeg", ."png"):
+    try: 
+      if extension in (".jpg", ".jpeg", ".png"):
         self.contents = open("public{}".format(file_path), 'rb')
       else:
         self.contents = open("public{}".format(file_path), 'r')
 
-      self.setContentType(extention)
+      self.setContentType(extension)
       self.setStatus(200)
       return True
     except:

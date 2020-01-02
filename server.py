@@ -23,35 +23,32 @@ class Server(BaseHTTPRequestHandler):
         handler.find(routes[self.path])
       else:
         handler = BadRequestHandler()
-
     elif request_extension is ".py":
       handler = BadRequestHandler()
     else:
-      handler = StaticHandler
+      handler = StaticHandler()
       handler.find(self.path)
 
     self.respond({
       'handler': handler
     })
 
-  def handle_http(self, handler):
-    status_code = handler.getStatus()
-
+  def handle_http(self, status_code, handler):
     self.send_response(status_code)
 
-    if status_code is 200:
-      content = handler.getContents()
-      self.send_header('Content-type', handler.getContentType())
-    else:
-      content = "404 Not Found"
+        if status_code is 200:
+            content = handler.getContents()
+            self.send_header('Content-type', handler.getContentType())
+        else:
+            content = "404 Not Found"
+        
+        self.end_headers()
 
-    self.end_headers()
+        if isinstance( content, (bytes, bytearray) ):
+            return content
 
-    if isinstance(content, (bytes, bytearray)):
-      return content
+        return bytes(content, 'UTF-8')
 
-    return bytes(content, 'UTF-8')
-
-  def respond(self, opts):
-    response = self.handle_http(opts['handler'])
-    self.wfile.write(response)
+    def respond(self, opts):
+        response = self.handle_http(opts['handler'])
+        self.wfile.write(response)
