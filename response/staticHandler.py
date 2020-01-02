@@ -1,3 +1,4 @@
+import os
 from response.requestHandler import RequestHandler
 
 class StaticHandler(RequestHandler):
@@ -5,7 +6,22 @@ class StaticHandler(RequestHandler):
     return
   
   def find(self, file_path):
-    return
+    split_path = os.path.splitext(file_path)
+    extention = split_path[1]
+
+    try:
+      if extention in (".jpg", ".jpeg", ."png"):
+        self.contents = open("public{}".format(file_path), 'rb')
+      else:
+        self.contents = open("public{}".format(file_path), 'r')
+
+      self.setContentType(extention)
+      self.setStatus(200)
+      return True
+    except:
+      self.setContentType('notfound')
+      self.setStatus(404)
+      return False
 
   def setContentType(self, ext):
     return
