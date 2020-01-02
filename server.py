@@ -1,6 +1,8 @@
+import os
 from http.server import BaseHTTPRequestHandler
 from routes.main import routes
-from pathlib import Path
+from response.templateHandler import TemplateHandler
+from response.badRequestHandler import BadRequestHandler
 
 class Server(BaseHTTPRequestHandler):
   def do_HEAD(self):
@@ -10,7 +12,21 @@ class Server(BaseHTTPRequestHandler):
     return
 
   def do_GET(self):
-    self.respond()
+    split_path = os.path.splitext(self.path)
+    request_extention = split_path[1]
+
+    if request_extention is "" or request_extention is ".html":
+      if self.path in routes:
+        handler = TemplateHandler()
+        handler.find(routes[self.path])
+      else:
+        handler = BadRequestHandler()
+    else:
+      handler = BadRequestHandler()
+
+    self.respond({
+      'handler': handler
+    })
 
   def handle_http(self):
     status = 200
