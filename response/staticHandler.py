@@ -3,7 +3,13 @@ from response.requestHandler import RequestHandler
 
 class StaticHandler(RequestHandler):
   def __init__(self):
-    return
+    self.filetypes = {
+      ".js" : "text/javascript",
+      ".css" : "text/css",
+      ".jpg" : "image/jpeg",
+      ".png" : "image/png",
+      "notfound" : "text/plain"
+    }
   
   def find(self, file_path):
     split_path = os.path.splitext(file_path)
@@ -24,4 +30,4 @@ class StaticHandler(RequestHandler):
       return False
 
   def setContentType(self, ext):
-    return
+    self.contentType = self.filetypes[ext]
